@@ -31,3 +31,6 @@ for diag, temp in temp_by_diag.items():
 print("=" * 50)
 print("Exploration terminee !")
 print("=" * 50)
+# ===== REPARTITION PAR SEXE ET DIAGNOSTIC =====
+print(f"\n--- Patients par sexe et diagnostic ---")
+print(df.groupby(["sexe", "diagnostic"]).size())
