@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>SenSante</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-blue-600 text-white py-4 shadow-lg">
+
+        <div class="max-w-4xl mx-auto px-4">
+
+            <h1 class="text-2xl font-bold">
+                SenSante
+            </h1>
+
+            <p class="text-blue-100 text-sm">
+                Assistant pre-diagnostic medical
+            </p>
+
+        </div>
+
+    </header>
+
+    <!-- CONTENU -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- FORMULAIRE -->
+        <div id="form-section"
+class="bg-white rounded-xl shadow-md p-6">
+
+    <h2 class="text-xl font-bold text-gray-800 mb-4">
+        Symptomes du patient
+    </h2>
+
+    <!-- AGE -->
+    <div class="mb-3">
+
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Age
+        </label>
+
+        <input
+            type="number"
+            id="age"
+            class="w-full border border-gray-300 rounded-lg p-2"
+            placeholder="Ex: 28">
+
+    </div>
+
+    <!-- SEXE -->
+    <div class="mb-3">
+
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Sexe
+        </label>
+
+        <select
+            id="sexe"
+            class="w-full border border-gray-300 rounded-lg p-2">
+
+            <option value="F">
+                Feminin
+            </option>
+
+            <option value="M">
+                Masculin
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- TEMPERATURE -->
+    <div class="mb-3">
+
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Temperature
+        </label>
+
+        <input
+            type="number"
+            id="temperature"
+            step="0.1"
+            class="w-full border border-gray-300 rounded-lg p-2"
+            placeholder="Ex: 38.5">
+
+    </div>
+
+    <!-- TENSION -->
+    <div class="mb-3">
+
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Tension systolique
+        </label>
+
+        <input
+            type="number"
+            id="tension_sys"
+            class="w-full border border-gray-300 rounded-lg p-2"
+            placeholder="Ex: 120">
+
+    </div>
+
+    <!-- SYMPTOMES -->
+    <div class="mb-3">
+
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+            Symptomes
+        </label>
+
+        <div class="space-y-2">
+
+            <label class="flex items-center">
+
+                <input
+                    type="checkbox"
+                    id="toux"
+                    class="mr-2">
+
+                <span>
+                    Toux
+                </span>
+
+            </label>
+
+            <label class="flex items-center">
+
+                <input
+                    type="checkbox"
+                    id="fatigue"
+                    class="mr-2">
+
+                <span>
+                    Fatigue
+                </span>
+
+            </label>
+
+            <label class="flex items-center">
+
+                <input
+                    type="checkbox"
+                    id="maux_tete"
+                    class="mr-2">
+
+                <span>
+                    Maux de tete
+                </span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+    <!-- REGION -->
+    <div class="mb-4">
+
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Region
+        </label>
+
+        <select
+            id="region"
+            class="w-full border border-gray-300 rounded-lg p-2">
+
+            <option value="Dakar">
+                Dakar
+            </option>
+
+            <option value="Thies">
+                Thies
+            </option>
+
+            <option value="Ziguinchor">
+                Ziguinchor
+            </option>
+
+            <option value="Saint-Louis">
+                Saint-Louis
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- BOUTON -->
+    <button
+        onclick="diagnostiquer()"
+        class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700">
+
+        Diagnostiquer
+
+    </button>
+
+</div>
+
+        <div id="result-section">
+
+            <div class="bg-white rounded-xl shadow-md p-6 text-center text-gray-400">
+
+                <p class="text-4xl mb-3">
+                     🩺
+                </p>
+
+                <p class="font-medium">
+                    Remplissez le formulaire
+                </p>
+
+                <p class="text-sm mt-1">
+                    puis cliquez sur Diagnostiquer
+                </p>
+
+        </div>
+
+</div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center text-gray-400 text-sm py-4">
+
+        SenSante v0.3
+
+    </footer>
+
+   <script>
+
+const API_URL = "http://localhost:8000";
+const historique = [];
+
+async function diagnostiquer() {
+
+    const patient = {
+
+        age: parseInt(
+            document.getElementById("age").value
+        ),
+
+        sexe:
+            document.getElementById("sexe").value,
+
+        temperature: parseFloat(
+            document.getElementById("temperature").value
+        ),
+
+        tension_sys: parseInt(
+            document.getElementById("tension_sys").value
+        ),
+
+        toux:
+            document.getElementById("toux").checked,
+
+        fatigue:
+            document.getElementById("fatigue").checked,
+
+        maux_tete:
+            document.getElementById("maux_tete").checked,
+
+        region:
+            document.getElementById("region").value
+    };
+
+    afficherChargement();
+
+    try {
+
+        const response = await fetch(
+            API_URL + "/predict",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(patient)
+
+            }
+        );
+
+        const resultat = await response.json();
+
+        afficherResultat(resultat);
+
+    }
+
+    catch (error) {
+
+        afficherErreur(
+            "Erreur de connexion"
+        );
+
+    }
+
+}
+
+function afficherChargement() {
+
+    document.getElementById(
+        "result-section"
+    ).innerHTML = `
+
+        <div class="bg-white rounded-xl shadow-md p-6 text-center">
+
+            <p>
+                Analyse en cours...
+            </p>
+
+        </div>
+    `;
+}
+
+function afficherResultat(r) {
+    historique.unshift({
+    diagnostic: r.diagnostic,
+    probabilite: Math.round(r.probabilite * 100)
+});
+
+if (historique.length > 5) {
+    historique.pop();
+}
+
+    let emoji = "🩺";
+
+if (r.diagnostic === "palu") {
+    emoji = "🌡️";
+}
+
+else if (r.diagnostic === "grippe") {
+    emoji = "❄️";
+}
+
+else if (r.diagnostic === "typh") {
+    emoji = "⚠️";
+}
+
+else if (r.diagnostic === "sain") {
+    emoji = "✅";
+}
+let historiqueHTML = "";
+
+historique.forEach((item) => {
+
+    historiqueHTML += `
+        <div class="border-b py-2">
+
+            <p class="font-medium">
+                ${item.diagnostic}
+            </p>
+
+            <p class="text-sm text-gray-500">
+                ${item.probabilite}%
+            </p>
+
+        </div>
+    `;
+});
+    document.getElementById(
+        "result-section"
+    ).innerHTML = `
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+
+           <h2 class="text-xl font-bold mb-4">
+                ${emoji} Resultat
+            </h2>
+            <p class="text-2xl font-bold text-red-600 uppercase">
+
+                ${r.diagnostic}
+
+            </p>
+
+            <p class="mt-3">
+
+                Probabilite :
+                ${Math.round(r.probabilite * 100)}%
+
+            </p>
+
+            <p class="mt-3 text-gray-600">
+
+                ${r.message}
+
+            </p>
+
+        </div>
+    `;
+}
+
+function afficherErreur(msg) {
+
+    document.getElementById(
+        "result-section"
+    ).innerHTML = `
+
+        <div class="bg-red-100 p-6 rounded-xl">
+
+            <p class="text-red-700">
+
+                ${msg}
+
+            </p>
+            <div class="mt-6">
+
+                <h3 class="font-bold mb-2">
+                    Historique
+                </h3>
+
+                ${historiqueHTML}
+
+            </div>
+
+        </div>
+    `;
+}
+
+</script>
+
+</body>
+
+</html>
