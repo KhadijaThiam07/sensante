@@ -133,10 +133,10 @@ app = FastAPI(
 # --- Chargement du modèle ---
 
 print("Chargement du modèle...")
-model = joblib.load("models/model.pkl")
-le_sexe = joblib.load("models/encoder_sexe.pkl")
-le_region = joblib.load("models/encoder_region.pkl")
-feature_cols = joblib.load("models/feature_cols.pkl")
+model = joblib.load("/app/models/model.pkl")
+le_sexe = joblib.load("/app/models/encoder_sexe.pkl")
+le_region = joblib.load("/app/models/encoder_region.pkl")
+feature_cols = joblib.load("/app/models/feature_cols.pkl")-
 
 print(f"Modèle chargé : {list(model.classes_)}")
 
