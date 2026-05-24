@@ -4,10 +4,12 @@ emoji: 🏥
 colorFrom: purple
 colorTo: green
 sdk: docker
+app_file: api/main.py
 pinned: false
 ---
+
 # SenSante
-Assistant de pre-diagnostic medical pour le Senegal.
+Assistant pré-diagnostic médical pour le Sénégal.
 
 ## Auteur
 KhadidjatouThiam - L2 GLSI B - ESP/UCAD
