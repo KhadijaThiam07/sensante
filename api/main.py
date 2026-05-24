@@ -136,7 +136,7 @@ print("Chargement du modèle...")
 model = joblib.load("/app/models/model.pkl")
 le_sexe = joblib.load("/app/models/encoder_sexe.pkl")
 le_region = joblib.load("/app/models/encoder_region.pkl")
-feature_cols = joblib.load("/app/models/feature_cols.pkl")-
+feature_cols = joblib.load("/app/models/feature_cols.pkl")
 
 print(f"Modèle chargé : {list(model.classes_)}")
 
