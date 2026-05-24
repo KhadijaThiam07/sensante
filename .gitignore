@@ -7,3 +7,5 @@ models/*.pkl
 Thumbs.db
 .vscode/
 .idea/
+models/*.pkl
+.gitattributes
