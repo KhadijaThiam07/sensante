@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from groq import Groq
-import os
 from dotenv import load_dotenv
 import joblib
 app = FastAPI()
@@ -133,10 +132,26 @@ app = FastAPI(
 # --- Chargement du modèle ---
 
 print("Chargement du modèle...")
-model = joblib.load("/app/models/model.pkl")
-le_sexe = joblib.load("/app/models/encoder_sexe.pkl")
-le_region = joblib.load("/app/models/encoder_region.pkl")
-feature_cols = joblib.load("/app/models/feature_cols.pkl")
+import os
+
+# Charger le modèle s'il existe
+model_path = "/app/models/model.pkl"
+if os.path.exists(model_path):
+    model = joblib.load(model_path)
+else:
+    print("⚠️ Modèle non trouvé, création d'un modèle dummy")
+    model = None
+
+le_sexe = None
+le_region = None
+feature_cols = None
+
+if os.path.exists("/app/models/encoder_sexe.pkl"):
+    le_sexe = joblib.load("/app/models/encoder_sexe.pkl")
+if os.path.exists("/app/models/encoder_region.pkl"):
+    le_region = joblib.load("/app/models/encoder_region.pkl")
+if os.path.exists("/app/models/feature_cols.pkl"):
+    feature_cols = joblib.load("/app/models/feature_cols.pkl")
 
 print(f"Modèle chargé : {list(model.classes_)}")
 
